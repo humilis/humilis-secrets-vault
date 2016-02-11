@@ -1,0 +1,78 @@
+---
+resources:
+    {# The lambda function processing raw events #}
+    LambdaFunction:
+      Type: 'AWS::Lambda::Function'
+      Properties:
+        Code:
+          S3Bucket: "{{lambda_function.s3bucket}}"
+          S3Key: "{{lambda_function.s3key}}"
+        Runtime: "python2.7"
+        Description: "Processes raw events."
+        {# in seconds #}
+        Timeout: 100
+        Handler: "main.lambda_handler"
+        Role:
+          "Fn::GetAtt":
+              - LambdaExecutionRole
+              - Arn
+    {# The role associated to the Lambda function that processes raw events #}
+    LambdaExecutionRole:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                  Service: 'lambda.amazonaws.com'
+              Action: 'sts:AssumeRole'
+        {# Keep all environment role under the same path #}
+        Path: {{ "/{}/".format(_env.name) }}
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  {# Write access to Cloudwatch logs #}
+                  Action:
+                    - "logs:CreateLogGroup"
+                    - "logs:CreateLogStream"
+                    - "logs:PutLogEvents"
+                  Resource: "arn:aws:logs:*:*:*"
+                - Effect: Allow
+                  {# Permissions to push to the Firehose delivery stream #}
+                  Action:
+                    - "firehose:PutRecord"
+                    - "firehose:PutRecordBatch"
+                    - "firehose:ListDeliveryStreams"
+                    - "firehose:DescribeDeliveryStream"
+                  Resource: {{ delivery_stream.arn }}
+                - Effect: Allow
+                  {# Permission to list and describe I/O streams #}
+                  Action:
+                    - "kinesis:DescribeStream"
+                    - "kinesis:ListStreams"
+                  Resource: "*"
+                - Effect: Allow
+                  {# Permissions to read from the input stream #}
+                  Action:
+                    - "kinesis:GetRecords"
+                    - "kinesis:GetShardIterator"
+                  Resource: {{ input_stream.arn }}
+                - Effect: Allow
+                  {# Permissions to write to output stream #}
+                  Action:
+                    - "kinesis:PutRecords"
+                  Resource: {{ output_stream.arn }}
+    InputEventSourceMapping:
+      Type: "AWS::Lambda::EventSourceMapping"
+      Properties:
+        BatchSize: {{ batch_size }}
+        {# The ARN of the input Kinesis stream #}
+        EventSourceArn: {{ input_stream.arn }}
+        FunctionName:
+          Ref: LambdaFunction
+        StartingPosition:
+          TRIM_HORIZON
