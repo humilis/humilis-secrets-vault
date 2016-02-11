@@ -1,6 +1,0 @@
-# test requirements
-pytest
-pytest-cov
-mock
-tox
-git+https://github.com/InnovativeTravel/humilis
