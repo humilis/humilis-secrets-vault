@@ -30,14 +30,13 @@ TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
 # * id: The primary key identifying your secrets
 # * value: The encrypted value of your secret
 client = boto3.client('dynamodb')
-encrypted_secret = client.get_item(
+encrypted = client.get_item(
     TableName=TABLE_NAME,
     Key={'id': {'S': 'mysecret'}})['Item']['value']['B']
 
 # Decrypt using KMS (assuming the secret value is a string)
 client = boto3.client('kms')
-plain_text = client.decrypt(CiphertextBlob=encrypted_secret)['Plaintext']
-plain_text_secret = plain_text.decode()
+plaintext = client.decrypt(CiphertextBlob=encrypted)['Plaintext'].decode()
 ```
 
 __TO-DO__: Package the secrets retrieving logic as part of the Lambda processor
@@ -48,7 +47,7 @@ code.
 
 ```python
 KMS_KEY_ID = 'your_kms_key_id_here' # Retrieve from the deployment outputs
-MY_SECRET = 'plaintext_secret_text'
+MY_SECRET = 'plaintext_secret'
 MY_SECRET_ID = 'topsecret'
 TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
 
