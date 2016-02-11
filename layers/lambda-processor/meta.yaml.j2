@@ -1,0 +1,75 @@
+---
+# Template parameters to be set in the environment file when using this layer:
+#
+# * io_layer_name: The name of the layer that contains the input and output
+#                  Kinesis streams
+meta:
+    description:
+        Creates the event processor for the rawpipe pipeline
+    dependencies:
+        # Needs to know the names of the input and output Kinesis streams
+        - {{io_layer_name}}
+    parameters:
+        batch_size:
+            description:
+                The number of events to batch in one lambda execution
+            value: 1
+        input_stream:
+            description:
+                The name input Kinesis stream
+            value:
+                name:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}}
+                            output_name: InputStream
+                arn:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}}
+                            output_name: InputStreamArn
+        output_stream:
+            description:
+                The output Kinesis stream
+            value:
+                name:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}}
+                            output_name: OutputStream
+                arn:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}} 
+                            output_name: OutputStreamArn
+        delivery_stream:
+            description:
+                The delivery stream that delivers events to S3
+            value:
+                name:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}}
+                            output_name: DeliveryStream
+                arn:
+                    ref:
+                        parser: output
+                        parameters:
+                            layer_name: {{io_layer_name}}
+                            output_name: DeliveryStreamArn
+        lambda_function:
+            description:
+                The Lambda function that processes the raw event stream
+            # We use a low priority so that the delivery_stream reference is
+            # parsed before this reference.
+            priority: 100
+            value:
+                ref:
+                    parser: lambda
+                    parameters:
+                        path: lambda_function
