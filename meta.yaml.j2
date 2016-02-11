@@ -19,5 +19,13 @@ meta:
                     parser: output
                     parameters:
                         layer_name: {{lambda_processor}}
-                        output_name: LambdaFunctionArn
+                        output_name: LambdaExecutionRoleArn
                 {% endfor %}
+        additional_resources:
+            description:
+                Physical IDs (ARNs) of additional AWS resources (e.g. users, 
+                groups, roles, etc) with access to the secrets vault.
+            # Add here your IAM user if you want to be able to add secrets to 
+            # the vault using the DynamoDB console. NOTE: This parameter is 
+            # currently being ignored. To be implemented.
+            value:
