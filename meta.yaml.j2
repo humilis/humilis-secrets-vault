@@ -1,0 +1,28 @@
+---
+meta:
+    description:
+        Creates a secrets vault in DynamoDB
+    dependencies:
+        # Add here all the layers that will need to access the vault
+        # This is just an example for testing purposes:
+        {% for processor in lambda_processors %} 
+        - {{processor}}
+        {% endfor %}
+    parameters:
+        table_name:
+            description:
+                The name of the DynamoDB table that will store the secrets
+            value:
+                secrets-{{_env.name}}-{{_layer.name}}-{{_env.stage}}
+        lambda_processors:
+            description:
+                Physical IDs (ARNs) of all Lambda functions with access to the
+                secrets vault
+            value:
+                {% for processor in lambda_processors %}
+                - ref:
+                    parser: output
+                    parameters:
+                        layer_name: {{lambda_processor}}
+                        output_name: LambdaFunctionArn
+                {% endfor %}
