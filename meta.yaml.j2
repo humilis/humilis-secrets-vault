@@ -9,11 +9,6 @@ meta:
         - {{processor}}
         {% endfor %}
     parameters:
-        table_name:
-            description:
-                The name of the DynamoDB table that will store the secrets
-            value:
-                secrets-{{_env.name}}-{{_layer.name}}-{{_env.stage}}
         lambda_processors:
             description:
                 Physical IDs (ARNs) of all Lambda functions with access to the
