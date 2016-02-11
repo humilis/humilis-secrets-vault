@@ -2,7 +2,7 @@
 # The following template parameters need to be specified in the environment 
 # definition file:
 #
-# * lambda_processors: a list of lambda-processor layers
+# * associated_processors: a list of lambda-processor layers
 #
 meta:
     description:
@@ -10,8 +10,8 @@ meta:
     dependencies:
         # Add here all the layers that will need to access the vault
         # This is just an example for testing purposes:
-        {% for processor in lambda_processors %} 
-        - {{processor}}
+        {% for l in associated_processors %} 
+        - {{l}}
         {% endfor %}
     parameters:
         lambda_processors:
@@ -19,11 +19,11 @@ meta:
                 Physical IDs (ARNs) of all Lambda functions with access to the
                 secrets vault
             value:
-                {% for processor in lambda_processors %}
+                {% for proclayer in associated_processors %}
                 - ref:
                     parser: output
                     parameters:
-                        layer_name: {{lambda_processor}}
+                        layer_name: {{proclayer}}
                         output_name: LambdaExecutionRoleArn
                 {% endfor %}
         additional_resources:
