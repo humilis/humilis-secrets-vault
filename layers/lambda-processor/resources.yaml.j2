@@ -42,14 +42,6 @@ resources:
                     - "logs:PutLogEvents"
                   Resource: "arn:aws:logs:*:*:*"
                 - Effect: Allow
-                  {# Permissions to push to the Firehose delivery stream #}
-                  Action:
-                    - "firehose:PutRecord"
-                    - "firehose:PutRecordBatch"
-                    - "firehose:ListDeliveryStreams"
-                    - "firehose:DescribeDeliveryStream"
-                  Resource: {{ delivery_stream.arn }}
-                - Effect: Allow
                   {# Permission to list and describe I/O streams #}
                   Action:
                     - "kinesis:DescribeStream"

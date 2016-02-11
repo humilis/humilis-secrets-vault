@@ -46,22 +46,6 @@ meta:
                         parameters:
                             layer_name: {{io_layer_name}} 
                             output_name: OutputStreamArn
-        delivery_stream:
-            description:
-                The delivery stream that delivers events to S3
-            value:
-                name:
-                    ref:
-                        parser: output
-                        parameters:
-                            layer_name: {{io_layer_name}}
-                            output_name: DeliveryStream
-                arn:
-                    ref:
-                        parser: output
-                        parameters:
-                            layer_name: {{io_layer_name}}
-                            output_name: DeliveryStreamArn
         lambda_function:
             description:
                 The Lambda function that processes the raw event stream

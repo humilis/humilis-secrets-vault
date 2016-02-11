@@ -12,7 +12,6 @@ import boto3
 
 # Jinja2 will inject here the name of the delivery stream (see meta.yaml)
 # For local testing you obviously need to mock firehose.put_record()
-DELIVERY_STREAM_NAME = "{{delivery_stream.name}}"
 OUTPUT_STREAM_NAME = "{{output_stream.name}}"
 
 
