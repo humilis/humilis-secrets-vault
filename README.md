@@ -7,20 +7,36 @@ resources:
 
 * A [KMS Key][kms] used for encrypting and decrypting secrets.
 * A [DynamoDB][dynamodb] table to act as a central store for secrets.
-* An [IAM policy][iam] that gives selected entities (e.g. [Lambda][lambda]
-  functions or [EC2][ec2] instances) access to both the KMS Key and the
-  encrypted DynamoDB table.
-
 
 [humilis]: https://github.com/InnovativeTravel/humilis
-[lambda]: https://aws.amazon.com/documentation/lambda/
 [kms]: https://aws.amazon.com/kms/
 [dynamodb]: https://aws.amazon.com/dynamodb/
-[iam]: https://aws.amazon.com/iam/
-[ec2]: https://aws.amazon.com/ec2/
 
 
-## Requirements
+## How do I use this?
+
+Once this layer is deployed you should be able to retrieve secrets from the
+associated Lambda processors as follows:
+
+```python
+import boto3
+
+TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
+
+# Retrieve from DynamoDB
+client = boto3.client('dynamodb')
+encrypted_secret = client.get_item(
+    TableName=TABLE_NAME,
+    Key={'id': {'S': 'mysecret'}})['Item']['value']['B']
+
+# Decrypt using KMS (assuming the secret value is a string)
+client = boto3.client('kms')
+plain_text = client.decrypt(CiphertextBlob=encrypted_secret)['Plaintext']
+plain_text_secret = plain_text.decode()
+```
+
+
+## Deployment requirements
 
 You need to install [humilis][humilis] and configure a local profile:
 
