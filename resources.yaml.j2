@@ -1,0 +1,68 @@
+---
+resources:
+    {# The DynamoDB table #}
+    SecretsTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+          - AttributeName: value
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 50
+          WriteCapacityUnits: 50
+        {% if _env.stage %}
+        TableName: secrets_{{_env.name}}_{{_env.stage}}
+        {% else %}
+        TableName: secrets_{{_env.name}}
+        {% endif %}
+    {# The KMS key used for encryption #}
+    KmsKey:
+      Type: 'AWS::KMS::Key'
+      Properties:
+        Description: Gives access to the secrets vault in DynamoDB
+        KeyPolicy:
+          Ref: IamPolicy
+    {# The IAM policy that gives access to the KMS key #}
+    IamPolicy:
+      Type: 'AWS::IAM::Policy'
+      Properties:
+          - PolicyName: SecretsVaultAccessPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: Allow full access to root user
+                  Effect: Allow
+                  {# We give full access to root #}
+                  Principal:
+                    AWS:
+                      "Fn::Join": 
+                          - ""
+                          -
+                              - "arn:aws:iam:"
+                              - "::"
+                              - Ref: "AWS::AccountId"
+                              - ":"
+                              - "root"
+                  Action: "kms:*"
+                  Resource: "*"
+                  Principal: "arn:aws:logs:*:*:*"
+                - Sid: Allow use of the key
+                  Effect: Allow
+                  Principal:
+                    AWS: 
+                      {% for proc in lambda_processors %}
+                      - {{proc}}
+                      {% endfor %}
+                  Action: "kms:*"
+                  Action:
+                    - "kms:Encrypt"
+                    - "kms:Decrypt"
+                    - "kms:ReEncrypt*"
+                    - "kms:GenerateDataKey*"
+                    - "kms:DescribeKey"
+                  Resource: "*"
