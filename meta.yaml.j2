@@ -14,6 +14,11 @@ meta:
         - {{l}}
         {% endfor %}
     parameters:
+        key_admin:
+            description:
+                The IAM user or group that will administering the key
+            value:
+                user/german
         lambda_processors:
             description:
                 Physical IDs (ARNs) of all Lambda functions with access to the
