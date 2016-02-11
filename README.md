@@ -59,7 +59,7 @@ encrypted_secret = kms.encrypt(
 
 # Store in DynamoDB
 client = boto3.client('dynamodb')
-dynamo.put_item(
+client.put_item(
     TableName=TABLE_NAME, 
     Item={'id': {'S': MY_SECRET_ID}, 'value': {'B': encrypted_secret}})
 ```
@@ -67,7 +67,7 @@ dynamo.put_item(
 __TO-DO__: A `humilis` helper that would make this process easier:
 
 ```
-humilis set-secret [ENVIRONMENT] [STAGE] [SECRET]
+humilis set-secret [ENVIRONMENT_FILE] [SECRET] --stage [STAGE]
 ```
 
 
