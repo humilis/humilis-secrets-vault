@@ -1,0 +1,10 @@
+---
+resources:
+    InputStream:
+        Type: 'AWS::Kinesis::Stream'
+        Properties:
+            ShardCount: {{ input_stream.shard_count }}
+    OutputStream:
+        Type: 'AWS::Kinesis::Stream'
+        Properties:
+            ShardCount: {{ output_stream.shard_count }}
