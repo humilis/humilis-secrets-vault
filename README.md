@@ -15,6 +15,9 @@ resources:
 
 ## How do I use this?
 
+
+### Retrieving secrets 
+
 Once this layer is deployed you should be able to retrieve secrets from the
 associated Lambda processors as follows:
 
@@ -23,7 +26,9 @@ import boto3
 
 TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
 
-# Retrieve from DynamoDB
+# Retrieve from DynamoDB. It assumes that the DynamoDB table has two columns:
+# * id: The primary key identifying your secrets
+# * value: The encrypted value of your secret
 client = boto3.client('dynamodb')
 encrypted_secret = client.get_item(
     TableName=TABLE_NAME,
@@ -33,6 +38,36 @@ encrypted_secret = client.get_item(
 client = boto3.client('kms')
 plain_text = client.decrypt(CiphertextBlob=encrypted_secret)['Plaintext']
 plain_text_secret = plain_text.decode()
+```
+
+__TO-DO__: Package the secrets retrieving logic as part of the Lambda processor
+code.
+
+
+### Storing secrets
+
+```python
+KMS_KEY_ID = 'your_kms_key_id_here' # Retrieve from the deployment outputs
+MY_SECRET = 'plaintext_secret_text'
+MY_SECRET_ID = 'topsecret'
+TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
+
+# Encrypt using KMS
+encrypted_secret = kms.encrypt(
+    KeyId=KMS_KEY_ID, 
+    Plaintext=MY_SECRET)['CiphertextBlob']
+
+# Store in DynamoDB
+client = boto3.client('dynamodb')
+dynamo.put_item(
+    TableName=TABLE_NAME, 
+    Item={'id': {'S': MY_SECRET_ID}, 'value': {'B': encrypted_secret}})
+```
+
+__TO-DO__: A `humilis` helper that would make this process easier:
+
+```
+humilis set-secret [ENVIRONMENT] [STAGE] [SECRET]
 ```
 
 
