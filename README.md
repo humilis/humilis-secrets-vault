@@ -24,7 +24,7 @@ associated Lambda processors as follows:
 ```python
 import boto3
 
-TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
+TABLE_NAME = "secrets_{{_env.name}}_{{_env.stage}}"
 
 # Retrieve from DynamoDB. It assumes that the DynamoDB table has two columns:
 # * id: The primary key identifying your secrets
@@ -49,7 +49,7 @@ code.
 KMS_KEY_ID = 'your_kms_key_id_here' # Retrieve from the deployment outputs
 MY_SECRET = 'plaintext_secret'
 MY_SECRET_ID = 'topsecret'
-TABLE_NAME = "secrets-{{_env.name}}-{{_env.stage}}"
+TABLE_NAME = "secrets_{{_env.name}}_{{_env.stage}}"
 
 # Encrypt using KMS
 encrypted_secret = kms.encrypt(
