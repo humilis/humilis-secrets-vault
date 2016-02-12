@@ -39,14 +39,6 @@ client = boto3.client('kms')
 plaintext = client.decrypt(CiphertextBlob=encrypted)['Plaintext'].decode()
 ```
 
-If you want to store secrets form the command line the easiest is to use 
-[humilis][humilis]:
-
-```
-humilis set-secret --stage [STAGE] [ENVIRONMENT_FILE] [SECRET_ID] [SECRET_VALUE]
-```
-
-
 
 ### Storing secrets
 
@@ -68,10 +60,11 @@ client.put_item(
     Item={'id': {'S': MY_SECRET_ID}, 'value': {'B': encrypted_secret}})
 ```
 
-__TO-DO__: A `humilis` helper that would make this process easier:
+You can use [humilis][humilis] to store secrets in the vault from the command
+line:
 
 ```
-humilis set-secret [ENVIRONMENT_FILE] [SECRET] --stage [STAGE]
+humilis set-secret --stage [STAGE] [ENVIRONMENT_FILE] [SECRET_ID] [SECRET_VALUE]
 ```
 
 
