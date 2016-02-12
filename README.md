@@ -39,8 +39,13 @@ client = boto3.client('kms')
 plaintext = client.decrypt(CiphertextBlob=encrypted)['Plaintext'].decode()
 ```
 
-__TO-DO__: Package the secrets retrieving logic as part of the Lambda processor
-code.
+If you want to store secrets form the command line the easiest is to use 
+[humilis][humilis]:
+
+```
+humilis set-secret --stage [STAGE] [ENVIRONMENT_FILE] [SECRET_ID] [SECRET_VALUE]
+```
+
 
 
 ### Storing secrets
