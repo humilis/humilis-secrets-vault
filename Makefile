@@ -10,10 +10,6 @@ develop: .env
 	rm -f layers/secrets-vault
 	ln -fs ../ layers/secrets-vault
 
-# run test suite
-test:
-	.env/bin/tox
-
 # remove virtualenv and layers dir
 clean:
 	rm -rf .env
@@ -22,10 +18,8 @@ clean:
 create:
 	humilis create --stage TEST $(ENV_FILE)
 
-
 update:
 	humilis update --stage TEST $(ENV_FILE)
-
 
 delete:
 	humilis delete --stage TEST $(ENV_FILE)

@@ -14,9 +14,9 @@ resources:
           ReadCapacityUnits: 50
           WriteCapacityUnits: 50
         {% if _env.stage %}
-        TableName: secrets_{{_env.name}}_{{_env.stage}}
+        TableName: {{_env.name}}-{{_env.stage}}-secrets
         {% else %}
-        TableName: secrets_{{_env.name}}
+        TableName: {{_env.name}}-secrets
         {% endif %}
     {# The KMS key used for encryption #}
     KmsKey:
