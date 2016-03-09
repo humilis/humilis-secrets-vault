@@ -1,25 +1,39 @@
-ENV_FILE := secrets-vault-test.yaml
+HUMILIS := .env/bin/humilis
+PIP := .env/bin/pip
+TOX := .env/bin/tox
+PYTHON := .env/bin/python
+STAGE := DEV
+HUMILIS_ENV := tests/integration/secrets-vault
+
 # create virtual environment
 .env:
-	virtualenv .env -p python3.4
+	virtualenv .env -p python3
 
 # install dev dependencies, create layers directory
 develop: .env
 	.env/bin/pip install -r requirements-dev.txt
-	mkdir -p layers
-	rm -f layers/secrets-vault
-	ln -fs ../ layers/secrets-vault
 
-# remove virtualenv and layers dir
+# run integration tests
+test: .env
+	$(PIP) install tox
+	$(TOX)
+
+# remove .tox and .env dirs
 clean:
-	rm -rf .env
-	rm layers/io-streams
+	rm -rf .env .tox
 
-create:
-	humilis create --stage TEST $(ENV_FILE)
+# deploy the test environment
+create: develop
+	$(HUMILIS) create --stage $(STAGE) $(HUMILIS_ENV).yaml
 
-update:
-	humilis update --stage TEST $(ENV_FILE)
+# update the test deployment
+update: develop
+	$(HUMILIS) update --stage $(STAGE) $(HUMILIS_ENV).yaml
 
-delete:
-	humilis delete --stage TEST $(ENV_FILE)
+# delete the test deployment
+delete: develop
+	$(HUMILIS) delete --stage $(STAGE) $(HUMILIS_ENV).yaml
+
+# upload to Pypi
+pypi: develop
+	$(PYTHON) setup.py sdist upload

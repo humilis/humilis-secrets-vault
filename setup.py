@@ -4,7 +4,7 @@
 import os
 from setuptools import setup
 
-import secrets_vault.metadata as metadata
+import humilis_secrets_vault.metadata as metadata
 
 
 try:
@@ -21,6 +21,10 @@ setup(
     version=metadata.version,
     author=metadata.authors_string,
     author_email=metadata.emails[0],
+    include_package_data=True,
+    package_data={
+        "": ["*.j2", "*.yaml"]},
+    packages=["humilis_secrets_vault"],
     url=metadata.url,
     license=metadata.license,
     description=metadata.description,
@@ -32,5 +36,5 @@ setup(
     zip_safe=False,
     entry_points={
         "humilis.layers": [
-            "secrets-vault=secrets_vault.__init__:get_layer_path"]}
+            "secrets-vault=humilis_secrets_vault.__init__:get_layer_path"]}
 )

@@ -1,12 +1,9 @@
 Secrets Vault
 ==================
 
-This repository contains a [humilis][humilis] layer that facilitates storing 
-and sharing secrets in your application. It consists of the following 
-resources:
-
-* A [KMS Key][kms] used for encrypting and decrypting secrets.
-* A [DynamoDB][dynamodb] table to act as a central store for secrets.
+A [humilis][humilis] plugin that deploys an encrypted DynamoDB table that
+serves secrets to one or more Lambda functions. The encryption and decryption
+of secrets is handled by AWS [KMS service][kms].
 
 [humilis]: https://github.com/InnovativeTravel/humilis
 [kms]: https://aws.amazon.com/kms/
