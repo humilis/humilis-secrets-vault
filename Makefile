@@ -25,10 +25,12 @@ clean:
 # deploy the test environment
 create: develop
 	$(HUMILIS) create --stage $(STAGE) $(HUMILIS_ENV).yaml
+	$(PYTHON) scripts/deploy-secrets.py $(HUMILIS_ENV).yaml $(STAGE)
 
 # update the test deployment
 update: develop
 	$(HUMILIS) update --stage $(STAGE) $(HUMILIS_ENV).yaml
+	$(PYTHON) scripts/deploy-secrets.py $(HUMILIS_ENV).yaml $(STAGE)
 
 # delete the test deployment
 delete: develop
