@@ -11,8 +11,8 @@ resources:
           - AttributeName: id 
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 50
-          WriteCapacityUnits: 50
+          ReadCapacityUnits: {{dynamodb_capacity.read}}
+          WriteCapacityUnits: {{dynamodb_capacity.write}}
         {% if _env.stage %}
         TableName: {{_env.name}}-{{_env.stage}}-secrets
         {% else %}
