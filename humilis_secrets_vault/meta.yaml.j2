@@ -19,6 +19,7 @@ meta:
                 The IAM user or group that will administering the key
             value:
                 user/german
+
         lambda_processors:
             description:
                 Physical IDs (ARNs) of all Lambda functions with access to the
@@ -31,6 +32,14 @@ meta:
                         layer_name: {{proclayer}}
                         output_name: LambdaExecutionRoleArn
                 {% endfor %}
+
+        dynamodb_capacity:
+            description:
+                The read and write capacity of the secret vault dynamo table
+            value:
+                read: 5
+                write: 1
+
         additional_resources:
             description:
                 Physical IDs (ARNs) of additional AWS resources (e.g. users, 
