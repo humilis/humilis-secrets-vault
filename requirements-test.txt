@@ -1,6 +1,5 @@
 # test requirements
 boto3
-humilis >= 0.3.0
 mock
 pytest
 pytest-cov
@@ -9,6 +8,9 @@ tox
 # We need to install this layer to be able to test it
 .
 
-# Also need these supporting layers to run the integration test suite
-git+https://github.com/InnovativeTravel/humilis-streams
-git+https://github.com/InnovativeTravel/humilis-filter
+# The dev version of humilis
+git+https://github.com/humilis/humilis
+
+# Supporting layers to run the integration test suite
+git+https://github.com/humilis/humilis-streams
+git+https://github.com/humilis/humilis-kinesis-processor.git@allow-no-error-stream
