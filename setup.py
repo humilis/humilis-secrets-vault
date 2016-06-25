@@ -1,18 +1,20 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Setuptools entry point."""
 
 import os
+import codecs
 from setuptools import setup
 
 import humilis_secrets_vault.metadata as metadata
 
+dirname = os.path.dirname(__file__)
 
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError, RuntimeError):
     if os.path.isfile("README.md"):
-        long_description = open("README.md").read()
+        long_description = codecs.open(os.path.join(dirname, "README.md"),
+                                       encoding="utf-8").read()
     else:
         long_description = metadata.description
 
