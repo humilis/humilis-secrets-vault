@@ -2,7 +2,7 @@
 
 import os
 import codecs
-from setuptools import setup
+from setuptools import setup, find_packages
 
 import humilis_secrets_vault.metadata as metadata
 
@@ -26,7 +26,7 @@ setup(
     include_package_data=True,
     package_data={
         "": ["*.j2", "*.yaml"]},
-    packages=["humilis_secrets_vault"],
+    packages=find_packages(include=["humilis_secrets_vault"]),
     url=metadata.url,
     license=metadata.license,
     description=metadata.description,

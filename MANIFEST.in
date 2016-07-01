@@ -1,1 +1,3 @@
-include humilis_secrets_vault *.j2 *.yaml
+include *.rst
+include humilis_secrets_vault/*.j2
+include humilis_secrets_vault/*.yaml

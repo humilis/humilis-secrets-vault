@@ -2,7 +2,7 @@
 
 package = "humilis_secrets_vault"
 project = "humilis-secrets-vault"
-version = '0.2.1'
+version = '0.2.2'
 description = "Humilis layer that deploys a secrets vault"
 authors = ["German Gomez-Herrero"]
 authors_string = ', '.join(authors)
