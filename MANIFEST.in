@@ -1,1 +1,1 @@
-include humilis_fhrsc *.j2 *.yaml
+include humilis_secrets_vault *.j2 *.yaml
