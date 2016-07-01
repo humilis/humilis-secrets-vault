@@ -2,7 +2,7 @@ Secrets Vault
 ==================
 
 [![Build Status](https://travis-ci.org/humilis/humilis-secrets-vault.svg?branch=master)](https://travis-ci.org/humilis/humilis-secrets-vault)
-[![PyPI](https://img.shields.io/pypi/v/humilis-filter.svg?style=flat)](https://pypi.python.org/pypi/humilis-secrets-vault)
+[![PyPI](https://img.shields.io/pypi/v/humilis-secrets-vault.svg?style=flat)](https://pypi.python.org/pypi/humilis-secrets-vault)
 
 A [humilis][humilis] plugin that implements a `secrets-vault` layer. The layer
 consists of an encrypted DynamoDB table that serves secrets to Lambda
