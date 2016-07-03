@@ -178,6 +178,6 @@ See [License file][LICENSE].
 [LICENSE]: https://github.com/humilis/humilis-secrets-vault/blob/master/LICENSE.txt
 
 
-© 2016 German Gomez-Herrero, [Innovative Travel][it] and others.
+© 2016 German Gomez-Herrero, [Find Hotel][fh] and others.
 
-[it]: http://innovativetravel.eu/
+[it]: http://company.findhotel.net
