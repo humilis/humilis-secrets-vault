@@ -180,4 +180,4 @@ See [License file][LICENSE].
 
 © 2016 German Gomez-Herrero, [Find Hotel][fh] and others.
 
-[it]: http://company.findhotel.net
+[fh]: http://company.findhotel.net
